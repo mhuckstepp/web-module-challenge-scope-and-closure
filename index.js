@@ -33,11 +33,17 @@ console.log(
   Study the code for counter1 and counter2, then answer the questions below.
   
   1. What is the difference between counter1 and counter2?
+    
+    counter1 uses closures while counter2 does not. 
   
   2. Which of the two uses a closure? How can you tell?
+
+    counter1 uses closures and you can tell because it returns a function vs returning a specific number. counter2 effects global variables.
   
   3. In what scenario would the counter1 code be preferable? In what scenario would 
      counter2 be better?  
+
+     counter1 is generally better because it is contained to function scope. 
 */
 
 // counter1 code
@@ -50,12 +56,24 @@ function counterMaker() {
 
 const counter1 = counterMaker();
 
+// console.log(counter1());
+// console.log(counter1());
+// console.log(counter1());
+// console.log(count);
+
 // counter2 code
 let count = 0;
 
 function counter2() {
   return count++;
 }
+
+// console.log(counter2());
+// console.log(counter2());
+// console.log(counter2());
+// console.log(counter2());
+// console.log(count);
+// console.log(count);
 
 /* ⚾️⚾️⚾️ Task 2: inning() ⚾️⚾️⚾️
 Use the inning function below to do the following:
@@ -66,9 +84,18 @@ Use the inning function below to do the following:
 NOTE: This will be a callback function for the tasks below
 */
 
-function inning(/*Code Here*/) {
-  /*Code Here*/
+function inning() {
+  return Math.floor(Math.random() * 3);
 }
+
+// console.log(inning());
+// console.log(inning());
+// console.log(inning());
+// console.log(inning());
+// console.log(inning());
+// console.log(inning());
+// console.log(inning());
+// console.log(inning());
 
 /* ⚾️⚾️⚾️ Task 3: finalScore() ⚾️⚾️⚾️
 Use the finalScore function below to do the following:
@@ -84,17 +111,25 @@ Use the finalScore function below to do the following:
 }
 */
 
-function finalScore(/*code Here*/) {
-  /*Code Here*/
+function finalScore(callback, num) {
+  let home = 0;
+  let away = 0;
+  for (let i = num; i > 0; i--) {
+    home += callback();
+    away += callback();
+  }
+  return { Home: home, Away: away };
 }
+console.log("hello");
+console.log(finalScore(inning, 9));
 
 /* ⚾️⚾️⚾️ Task 4: getInningScore() ⚾️⚾️⚾️
 Use the getInningScore() function below to do the following:
   1. Receive a callback function - you will pass in the inning function from task 2 as your argument 
   2. Return an object with a score for home and a score for away that populates from invoking the inning callback function */
 
-function getInningScore(/*Your Code Here */) {
-  /*Your Code Here */
+function getInningScore(callback) {
+  return { Away: callback(), Home: callback() };
 }
 
 /* ⚾️⚾️⚾️ Task 5: scoreboard() ⚾️⚾️⚾️
@@ -138,9 +173,43 @@ Use the scoreboard function below to do the following:
 ]  
   */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(callback1, callback2, num) {
+  let newArr = [];
+  let home = 0;
+  let away = 0;
+  for (let i = 1; i <= num; i++) {
+    let homeInn = callback2();
+    let awayInn = callback2();
+    home += homeInn;
+    away += awayInn;
+    newArr.push(`Inning ${i}: Away  ${awayInn} - Home ${homeInn}`);
+  }
+  if (home === away) {
+    newArr.push(
+      `This game will require extra innings: Away ${away} - Home ${home}`
+    );
+  } else {
+    newArr.push(`Final Score: Away ${away} - Home ${home}`);
+  }
+  return newArr;
 }
+
+console.log(scoreboard(getInningScore, inning, 9));
+
+let gameArr = [];
+function scoreRecurse(callBack1, callBack2, num) {
+  if (num === 0) {
+    return gameArr;
+  } else {
+    console.log(num);
+    gameArr.push(num);
+    console.log(callBack1(callBack2));
+    gameArr.push(`Inning ${num}: ${callBack1(callBack2)}`);
+    scoreRecurse(callBack1, callBack2, num - 1);
+  }
+}
+
+console.log(scoreRecurse(getInningScore, inning, 9));
 
 /* 🛑🛑🛑🛑🛑 Please do not modify anything below this line 🛑🛑🛑🛑🛑 */
 function foo() {
