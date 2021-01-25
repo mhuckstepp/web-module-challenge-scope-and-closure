@@ -178,8 +178,9 @@ function scoreboard(callback1, callback2, num) {
   let home = 0;
   let away = 0;
   for (let i = 1; i <= num; i++) {
-    let homeInn = callback2();
-    let awayInn = callback2();
+    let currentScore = callback1(callback2);
+    let homeInn = currentScore.Home;
+    let awayInn = currentScore.Away;
     home += homeInn;
     away += awayInn;
     newArr.push(`Inning ${i}: Away  ${awayInn} - Home ${homeInn}`);
@@ -196,20 +197,18 @@ function scoreboard(callback1, callback2, num) {
 
 console.log(scoreboard(getInningScore, inning, 9));
 
-let gameArr = [];
-function scoreRecurse(callBack1, callBack2, num) {
-  if (num === 0) {
-    return gameArr;
-  } else {
-    console.log(num);
-    gameArr.push(num);
-    console.log(callBack1(callBack2));
-    gameArr.push(`Inning ${num}: ${callBack1(callBack2)}`);
-    scoreRecurse(callBack1, callBack2, num - 1);
+let scores = [];
+
+function scoreRecurse(scores, innings) {
+  if (innings > 0) {
+    scores.push(getInningScore(inning));
+    scoreRecurse(scores, innings - 1);
   }
+  // console.log(`hit ${getInningScore(inning)}`)
+  return scores;
 }
 
-console.log(scoreRecurse(getInningScore, inning, 9));
+console.log(scoreRecurse(scores, 9));
 
 /* 🛑🛑🛑🛑🛑 Please do not modify anything below this line 🛑🛑🛑🛑🛑 */
 function foo() {
